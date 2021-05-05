@@ -133,11 +133,11 @@ class ChordArray():
             t = self.arPos[pos_new_id]-2 ** (i)
             if (t<0):
                 t = 2 ** (self.m - 1) + t
-            p = self.find_predecessor(self.arPos,pos_new_id,self.arPos[pos_new_id]-2 ** (i))
-            print('Результат функции find_predecessor ', str(p.finger[2].interval[1]))
+            p = self.find_predecessor(self.arPos,pos_new_id,t)
+            print('Результат функции find_predecessor ', str(p.finger[self.m-2].interval[1]))
             k=0
             for j in self.arPos:
-                if (p.finger[2].interval[1] == j):
+                if (p.finger[self.m-2].interval[1] == j):
                     pos_new_id_ = k
                 k += 1
             self.update_finger_table(self.arPos,pos_new_id_,self.arPos[pos_new_id],i)
@@ -154,7 +154,7 @@ class ChordArray():
             r1 = self.find_predecessor(m_arPos, id_n, m_arPos[id_n])
             k = 0
             for j in self.arPos:
-                if (r1.finger[2].interval[1] == j):
+                if (r1.finger[self.m-2].interval[1] == j):
                     pos_new_id1 = k
                 k += 1
             #if (pos_new_id1>0):
@@ -188,10 +188,10 @@ class ChordArray():
             if (t<0):
                 t = 2 ** (self.m - 1) + t
             p = self.find_predecessor(self.arPos, pos_new_id, t)
-            print('Результат функции find_predecessor ', str(p.finger[2].interval[1]))
+            print('Результат функции find_predecessor ', str(p.finger[self.m-2].interval[1]))
             k = 0
             for j in self.arPos:
-                if (p.finger[2].interval[1] == j):
+                if (p.finger[self.m-2].interval[1] == j):
                     pos_new_id_ = k
                 k += 1
             for j in range(self.m - 1):
@@ -209,7 +209,7 @@ class ChordArray():
             r1 = self.find_predecessor(m_arPos, id_n, m_arPos[id_n])
             k = 0
             for j in self.arPos:
-                if (r1.finger[2].interval[1] == j):
+                if (r1.finger[self.m-2].interval[1] == j):
                     pos_new_id1 = k
                 k += 1
             self.update_finger_table_del(m_arPos, pos_new_id1, s,succeccor_id, i)
