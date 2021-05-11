@@ -24,6 +24,8 @@ new_id = new_id_[0]
 del_id_ = random.sample(m_arPos,1)
 del_id = del_id_[0]
 #m_arPos = [0, 1, 3] #Идентификаторы позиций, в которых находятся узлы
+#new_id = 7
+#del_id = 3
 #m_arPos = [0, 1, 4]
 
 from ChordNode import ChordArray

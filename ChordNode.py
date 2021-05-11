@@ -52,9 +52,32 @@ class ChordArray():
         for i in self.arPos:
             self.myArray.append(ChordNode(self.m, self.arPos, i))
 
+    def true_id_in_range(self, t, m_arPos, id_n, id):
+        right = id
+        ii = t
+        m = 2** (self.m-1)
+        if (m_arPos[id_n] >= right):
+            right += 1 << m
+            if (m_arPos[id_n] > t):
+                ii += 1 << m
+
+        return (m_arPos[id_n] < ii) and (ii < right)
+
     # return closest finger preceding id
+    def closest_preceding_finger(self, m_arPos, id_n, id):
+        for i in reversed(range(self.m - 1)):
+            t = self.myArray[id_n].finger[i].node[0]
+            bool = self.true_id_in_range(t, m_arPos, id_n, id)
+            if (bool==True):
+                for j in range(len(self.arPos)):
+                    if (self.myArray[id_n].finger[i].node[0] == self.arPos[j]):
+                        idx = j
+                        return idx
+        return id_n
+    """
     def closest_preceding_finger(self,m_arPos,id_n, id):
         for i in reversed(range(self.m - 1)):
+            
             if (id>=m_arPos[id_n]):
                 if (self.myArray[id_n].finger[i].node[0] <= id)and(self.myArray[id_n].finger[i].node[0] > m_arPos[id_n]):
                     for j in range(len(self.arPos)):
@@ -62,15 +85,22 @@ class ChordArray():
                             idx = j
                             return idx #self.myArray[idx],
             else:
-                right = 2** (self.m-1)
-                left = 0
-                if (self.myArray[id_n].finger[i].node[0] >= left) and (self.myArray[id_n].finger[i].node[0] < right):
+                right = m_arPos[id_n]# 2** (self.m-1)
+                #left = id #0
+                left = self.myArray[id_n].finger[i].node[0]
+                if (right < left):
+                    right = self.myArray[id_n].finger[i].node[0]
+                    left = m_arPos[id_n]
+                    #if (self.myArray[id_n].finger[i].node[0] >= left) and (self.myArray[id_n].finger[i].node[0] < right):
+                if (id >= left) and (
+                            id < right):
+
                     for j in range(len(self.arPos)):
                         if (self.myArray[id_n].finger[i].node[0] == self.arPos[j]):
                             idx = j
                             return idx
         return id_n #self.myArray[id_n]
-
+        """
     def find_predecessor(self,m_arPos,id_n,id):
         n_ = copy.deepcopy(self.myArray[id_n])
         """
