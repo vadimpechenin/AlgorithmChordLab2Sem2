@@ -23,10 +23,10 @@ new_id = new_id_[0]
 #Узел для удаления
 del_id_ = random.sample(m_arPos,1)
 del_id = del_id_[0]
-#m_arPos = [0, 1, 3] #Идентификаторы позиций, в которых находятся узлы
-#new_id = 7
+#m_arPos = [3, 4, 6] #Идентификаторы позиций, в которых находятся узлы
+#new_id = 2
 #del_id = 3
-#m_arPos = [0, 1, 4]
+#m_arPos = [0, 3, 6]
 
 from ChordNode import ChordArray
 
@@ -50,21 +50,26 @@ for i in ChordArray1.myArray:
 #    myArray.append(ChordNode(M_intM, m_arPos, i))
 
 #Проверка функций поиска узла
-id=5
-id_0 = 1
-print(' ')
-print('1. Требуется вывести узел с id = ',str(id))
-print('Стоим на узле с id = ', str(m_arPos[id_0]))
-r0 = ChordArray1.closest_preceding_finger(m_arPos,id_0,id)
-print('Результат функции closest_preceding_finger ', str(r0))
-r1 = ChordArray1.find_predecessor(m_arPos,id_0,id)
-print('Результат функции find_predecessor ', str(r1.finger[M_intM-2].interval[1]))
-r2 = ChordArray1.find_successor(m_arPos,id_0,id)
-print('Результат функции find_successor ', str(r2))
+for j in range(N_elem0):
+    id_ = random.sample(array, 1)
+    N_elem0_ = [i for i in range(N_elem0)]
+    id_0_= random.sample(N_elem0_, 1)
+    id = id_[0]
+    id_0 = id_0_[0]
+    #id = 4
+    #id_0 = 0
+    print(' ')
+    print('1. Требуется вывести узел с id = ',str(id))
+    print('Стоим на узле с id = ', str(m_arPos[id_0]))
+    r0 = ChordArray1.closest_preceding_finger(m_arPos,id_0,id)
+    print('Результат функции closest_preceding_finger ', str(r0))
+    r1 = ChordArray1.find_predecessor(m_arPos,id_0,id)
+    print('Результат функции find_predecessor ', str(r1.finger[M_intM-2].interval[1]))
+    r2 = ChordArray1.find_successor(m_arPos,id_0,id)
+    print('Результат функции find_successor ', str(r2))
 
-print(' ')
+    print(' ')
 
-#new_id = 6
 print('2. Добавление узла с id ', str(new_id))
 ChordArray1.join(new_id)
 
@@ -78,7 +83,6 @@ for i in ChordArray1.myArray:
               + str(k.interval[1]) + '); node: ' + str(k.node[0]))
     j += 1
 
-del_id = 3
 print(' ')
 print('3. Удаление узла с id ', str(del_id))
 ChordArray1.remove_node(del_id)

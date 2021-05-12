@@ -52,85 +52,51 @@ class ChordArray():
         for i in self.arPos:
             self.myArray.append(ChordNode(self.m, self.arPos, i))
 
-    def true_id_in_range(self, t, m_arPos, id_n, id):
-        right = id
-        ii = t
+    def true_id_in_range(self, t, left, id):
+        right = copy.deepcopy(id)
+        ii = copy.deepcopy(t)
         m = 2** (self.m-1)
-        if (m_arPos[id_n] >= right):
-            right += 1 << m
-            if (m_arPos[id_n] > t):
-                ii += 1 << m
+        if (left > right):
+            right += m
+            if (left > t):
+                ii += m
 
-        return (m_arPos[id_n] < ii) and (ii < right)
+        return (left < ii) and (ii <= right)
 
     # return closest finger preceding id
     def closest_preceding_finger(self, m_arPos, id_n, id):
         for i in reversed(range(self.m - 1)):
             t = self.myArray[id_n].finger[i].node[0]
-            bool = self.true_id_in_range(t, m_arPos, id_n, id)
+            left = m_arPos[id_n]
+            bool = self.true_id_in_range(t, left, id)
             if (bool==True):
                 for j in range(len(self.arPos)):
                     if (self.myArray[id_n].finger[i].node[0] == self.arPos[j]):
                         idx = j
                         return idx
         return id_n
-    """
-    def closest_preceding_finger(self,m_arPos,id_n, id):
-        for i in reversed(range(self.m - 1)):
-            
-            if (id>=m_arPos[id_n]):
-                if (self.myArray[id_n].finger[i].node[0] <= id)and(self.myArray[id_n].finger[i].node[0] > m_arPos[id_n]):
-                    for j in range(len(self.arPos)):
-                        if (self.myArray[id_n].finger[i].node[0]==self.arPos[j]):
-                            idx = j
-                            return idx #self.myArray[idx],
-            else:
-                right = m_arPos[id_n]# 2** (self.m-1)
-                #left = id #0
-                left = self.myArray[id_n].finger[i].node[0]
-                if (right < left):
-                    right = self.myArray[id_n].finger[i].node[0]
-                    left = m_arPos[id_n]
-                    #if (self.myArray[id_n].finger[i].node[0] >= left) and (self.myArray[id_n].finger[i].node[0] < right):
-                if (id >= left) and (
-                            id < right):
 
-                    for j in range(len(self.arPos)):
-                        if (self.myArray[id_n].finger[i].node[0] == self.arPos[j]):
-                            idx = j
-                            return idx
-        return id_n #self.myArray[id_n]
-        """
     def find_predecessor(self,m_arPos,id_n,id):
+        m = 2 ** (self.m - 1)
         n_ = copy.deepcopy(self.myArray[id_n])
-        """
-        if (self.myArray[id_n].finger[0].node[0]>=m_arPos[id_n]):
-            left=m_arPos[id_n]
-            right = self.myArray[id_n].finger[0].node[0]
-        else:
-            left = self.myArray[id_n].finger[0].node[0]
-            right = m_arPos[id_n]
-        """
         left = m_arPos[id_n]
         right = self.myArray[id_n].finger[0].node[0]
-        if (self.myArray[id_n].finger[0].node[0]==0):
-            right = 2** (self.m-1)
-        while (id<left)or(id>right):
+        id1 = copy.deepcopy(id)
+        if (left > right):
+            right += m
+            if (id1==0)or(id1<left):
+                id1 += m
+
+        while not((left<=id1)and(id1<right)):   #(id1<left)or(id1>right)
             id_n=self.closest_preceding_finger(m_arPos,id_n,id)
             n_ = copy.deepcopy(self.myArray[id_n])
-            """
-            if (self.myArray[id_n].finger[0].node[0] >= m_arPos[id_n]):
-                left = m_arPos[id_n]
-                right = self.myArray[id_n].finger[0].node[0]
-            else:
-                left = self.myArray[id_n].finger[0].node[0]
-                right = m_arPos[id_n]
-            left = m_arPos[id_n]
-            """
             left = m_arPos[id_n]
             right = self.myArray[id_n].finger[0].node[0]
-            if (self.myArray[id_n].finger[0].node[0] == 0):
-                right = 2 ** (self.m - 1)
+            id1 = copy.deepcopy(id)
+            if (left > right):
+                right += m
+                if (id1 == 0)or(id1<left):
+                    id1 += m
         return n_
 
     def find_successor(self,m_arPos,id_n,id):
@@ -174,10 +140,11 @@ class ChordArray():
 
     # Обновление конкретной finger
     def update_finger_table(self,m_arPos,id_n,s,i):
+        m = 2 ** (self.m - 1)
         left = m_arPos[id_n]
         right = self.myArray[id_n].finger[i].node[0]
-        if (self.myArray[id_n].finger[i].node[0] == 0):
-            right = 2 ** (self.m - 1)
+        if (left > right):
+            right += m
         if (s >= left) and (s < right):
             self.myArray[id_n].finger[i].node[0] = s
             print('Обновлен node в узле ' + str(m_arPos[id_n])+ '; finger номер ' + str(m_arPos[i]))
@@ -190,7 +157,8 @@ class ChordArray():
             #if (pos_new_id1>0):
             #    pos_new_id1=pos_new_id1-1
             self.update_finger_table(m_arPos,pos_new_id1,s,i)
-            #Добавление для обновления крайнего узла
+
+            #Добавление для обновления крайнего узла 
             if i == self.m-2:
                 pos_new_id1 = pos_new_id1 - 1
                 self.update_finger_table(m_arPos, pos_new_id1, s, i)
@@ -200,6 +168,7 @@ class ChordArray():
         if len(self.arPos)>0:
             self.init_finger_table(id_n)
             k = 0
+
             for j in self.arPos:
                 if (id_n == j):
                     pos_new_id = k
@@ -208,6 +177,7 @@ class ChordArray():
             self.update_others(pos_new_id)
         else:
             self.init_finger_table(id_n)
+        #self.arPos.sort()
 
     # Метод обновления других узлов
     def update_others_del(self, pos_new_id, succeccor_id):
@@ -229,10 +199,11 @@ class ChordArray():
 
     # Обновление конкретной finger
     def update_finger_table_del(self, m_arPos, id_n, s, succeccor_id, i):
+        m = 2 ** (self.m - 1)
         left = m_arPos[id_n]
         right = self.myArray[id_n].finger[i].node[0]
-        if (self.myArray[id_n].finger[i].node[0] == 0):
-            right = 2 ** (self.m - 1)
+        if (left > right):
+            right += m
         if (self.myArray[id_n].finger[i].node[0] == s):
             self.myArray[id_n].finger[i].node[0] = succeccor_id
             print('Обновлен node в узле ' + str(m_arPos[id_n]) + '; finger номер ' + str(m_arPos[i]))
