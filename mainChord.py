@@ -9,7 +9,7 @@ M_intM = 4 # количество бит, используемых для ген
 array = [i for i in range(2**(M_intM-1))]
 #Случайный набор идентификаторов, где находятся узлы
 #Число начальных элементов
-N_elem0 = 3
+N_elem0 = 5
 m_arPos = random.sample(array, N_elem0) #Идентификаторы позиций, в которых находятся узлы
 #Сортировка списка
 m_arPos=sorted(m_arPos)
@@ -24,9 +24,9 @@ new_id = new_id_[0]
 del_id_ = random.sample(m_arPos,1)
 del_id = del_id_[0]
 #m_arPos = [3, 4, 6] #Идентификаторы позиций, в которых находятся узлы
-#new_id = 2
-#del_id = 3
-#m_arPos = [0, 3, 6]
+#new_id = 0
+#del_id = 2
+#m_arPos = [2, 5, 7]
 
 from ChordNode import ChordArray
 
